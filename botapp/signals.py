@@ -10,7 +10,7 @@ env = Env()
 env.read_env()
 
 
-service_account = env.str('GOOGLE_SERVICE_ACCOUNT')
+service_account = env.str('service_account')
 if service_account:
     with open('service_account.json', 'w') as f:
         json.dump(json.loads(service_account), f, indent=4)
