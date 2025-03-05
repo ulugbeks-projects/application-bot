@@ -5,16 +5,19 @@ import gspread
 from google.oauth2.service_account import Credentials
 from environs import Env
 import json
+import os
 
 env = Env()
 env.read_env()
 
+service_account = env.str('service_account', None)
 
-service_account = env.str('service_account')
+# Fayl nomi (bir joyda saqlab, qayta ishlatamiz)
+service_account_file = 'service_account.json'
+
 if service_account:
-    with open('service_account.json', 'w') as f:
+    with open(service_account_file, 'w') as f:
         json.dump(json.loads(service_account), f, indent=4)
-
     print("✅ service_account.json yaratildi.")
 else:
     raise Exception("❌ GOOGLE_SERVICE_ACCOUNT_JSON topilmadi.")
@@ -25,8 +28,9 @@ def get_google_sheet():
               "https://www.googleapis.com/auth/drive.file", 
               "https://www.googleapis.com/auth/drive"]
 
+    # Bu yerda JSON file'ni yo'lini beramiz
     credentials = Credentials.from_service_account_file(
-        service_account,
+        service_account_file,  # ✅ To'g'ri yo'l
         scopes=scopes
     )
 
